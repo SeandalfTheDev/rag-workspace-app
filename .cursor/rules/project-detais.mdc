@@ -1,0 +1,381 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# RAG Workspace - Collaborative Document Intelligence Platform
+
+## Overview
+
+RAG Workspace is a modern, collaborative document intelligence platform that enables teams to upload, share, and query documents using AI-powered semantic search and chat capabilities. Built on a workspace-based architecture, the application allows multiple users to collaborate on shared document collections with role-based access control.
+
+## Key Features
+
+- **🏢 Multi-tenant Workspaces**: Organized collaboration spaces with role-based permissions
+- **📄 Intelligent Document Processing**: Support for PDF, DOCX, TXT, and Markdown files
+- **🤖 AI-Powered Chat**: Semantic search and question-answering using Retrieval Augmented Generation (RAG)
+- **📤 Robust File Upload**: Chunked uploads for large files with real-time progress tracking
+- **⚡ Real-time Collaboration**: Live chat, typing indicators, and document processing updates
+- **🔐 Role-based Security**: Owner, Admin, and Member roles with granular permissions
+- **🔍 Vector Search**: Semantic document search using PostgreSQL with pgvector extension
+- **🎨 Modern UI**: Responsive Blazor interface with Tailwind CSS
+
+## Tech Stack
+
+### Backend
+- **ASP.NET Core 8.0** - Web API framework
+- **Entity Framework Core** - ORM for database operations
+- **PostgreSQL** - Primary database with pgvector extension for vector storage
+- **SignalR** - Real-time communication for chat and notifications
+- **Semantic Kernel** - Microsoft's AI orchestration framework
+- **Ollama** - Local LLM inference server
+- **JWT Authentication** - Secure token-based authentication
+
+### Frontend
+- **Blazor Server** - Interactive web UI framework
+- **Tailwind CSS** - Utility-first CSS framework
+- **JavaScript Interop** - File upload and UI enhancements
+
+### Infrastructure
+- **Docker** - Containerization for easy deployment
+- **Background Services** - Asynchronous document processing
+- **File Storage** - Configurable local or cloud storage
+
+## Project Architecture
+
+### High-Level Architecture
+
+```mermaid
+graph TB
+    Client[Blazor Client] --> API[ASP.NET Core API]
+    Client --> SignalR[SignalR Hubs]
+    API --> DB[(PostgreSQL + pgvector)]
+    API --> Ollama[Ollama LLM]
+    API --> Storage[File Storage]
+    API --> Queue[Background Queue]
+    Queue --> Processor[Document Processor]
+    Processor --> Embeddings[Vector Embeddings]
+    Embeddings --> DB
+```
+
+### Project Structure
+
+```
+RagWorkspace/
+├── src/
+│   ├── RagWorkspace.API/                    # Web API Layer
+│   │   ├── Controllers/                     # REST API controllers
+│   │   │   ├── AuthController.cs           # Authentication endpoints
+│   │   │   ├── WorkspacesController.cs     # Workspace management
+│   │   │   ├── DocumentsController.cs      # Document upload/management
+│   │   │   └── ChatController.cs           # Chat session management
+│   │   ├── Hubs/                           # SignalR hubs
+│   │   │   ├── ChatHub.cs                  # Real-time chat
+│   │   │   └── DocumentHub.cs              # Document processing updates
+│   │   ├── Services/                       # Business logic services
+│   │   │   ├── AuthService.cs              # Authentication logic
+│   │   │   ├── DocumentService.cs          # Document processing
+│   │   │   ├── ChatService.cs              # AI chat functionality
+│   │   │   └── SignalRNotificationService.cs # Real-time notifications
+│   │   ├── Middleware/                     # Custom middleware
+│   │   │   ├── ExceptionHandlingMiddleware.cs
+│   │   │   └── AuthenticationMiddleware.cs
+│   │   ├── Models/                         # API models and DTOs
+│   │   └── Program.cs                      # Application entry point
+│   │
+│   ├── RagWorkspace.Client/                # Blazor Frontend
+│   │   ├── Components/                     # Reusable UI components
+│   │   │   ├── Chat/                       # Chat-related components
+│   │   │   │   ├── ChatInterface.razor    # Main chat UI
+│   │   │   │   ├── MessageBubble.razor    # Individual messages
+│   │   │   │   └── TypingIndicator.razor  # Typing status
+│   │   │   ├── Documents/                  # Document-related components
+│   │   │   │   ├── DocumentUpload.razor   # File upload interface
+│   │   │   │   ├── DocumentList.razor     # Document browser
+│   │   │   │   └── UploadProgress.razor   # Upload progress tracking
+│   │   │   ├── Workspaces/                # Workspace components
+│   │   │   │   ├── WorkspaceSelector.razor
+│   │   │   │   ├── MemberManagement.razor
+│   │   │   │   └── WorkspaceSettings.razor
+│   │   │   └── Shared/                     # Common components
+│   │   │       ├── Layout/                 # Layout components
+│   │   │       └── Navigation/             # Navigation components
+│   │   ├── Pages/                          # Blazor pages
+│   │   │   ├── Index.razor                 # Landing page
+│   │   │   ├── Login.razor                 # Authentication
+│   │   │   ├── Workspace.razor             # Main workspace view
+│   │   │   └── Chat.razor                  # Chat interface
+│   │   ├── Services/                       # Client-side services
+│   │   │   ├── ApiService.cs               # HTTP API client
+│   │   │   ├── SignalRService.cs           # SignalR client
+│   │   │   ├── AuthenticationService.cs   # Client auth logic
+│   │   │   └── StateService.cs             # Application state
+│   │   ├── Models/                         # Client-side models
+│   │   └── Program.cs                      # Client entry point
+│   │
+│   ├── RagWorkspace.Core/                  # Domain Layer
+│   │   ├── Entities/                       # Domain entities
+│   │   │   ├── User.cs                     # User entity
+│   │   │   ├── Workspace.cs                # Workspace entity
+│   │   │   ├── WorkspaceMember.cs          # Membership entity
+│   │   │   ├── Document.cs                 # Document entity
+│   │   │   ├── DocumentChunk.cs            # Text chunk entity
+│   │   │   ├── ChatSession.cs              # Chat session entity
+│   │   │   └── ChatMessage.cs              # Chat message entity
+│   │   ├── Interfaces/                     # Service contracts
+│   │   │   ├── IDocumentService.cs
+│   │   │   ├── IChatService.cs
+│   │   │   ├── IWorkspaceService.cs
+│   │   │   ├── IVectorSearchService.cs
+│   │   │   └── IFileStorageService.cs
+│   │   ├── DTOs/                           # Data transfer objects
+│   │   │   ├── WorkspaceDto.cs
+│   │   │   ├── DocumentDto.cs
+│   │   │   ├── ChatMessageDto.cs
+│   │   │   └── UserDto.cs
+│   │   └── Enums/                          # Domain enumerations
+│   │       ├── WorkspaceRole.cs
+│   │       ├── DocumentStatus.cs
+│   │       └── MessageType.cs
+│   │
+│   ├── RagWorkspace.Infrastructure/        # Data Access Layer
+│   │   ├── Data/                           # Database context and configurations
+│   │   │   ├── ApplicationDbContext.cs     # EF Core context
+│   │   │   ├── Configurations/             # Entity configurations
+│   │   │   └── Migrations/                 # Database migrations
+│   │   ├── Repositories/                   # Data access repositories
+│   │   │   ├── UserRepository.cs
+│   │   │   ├── WorkspaceRepository.cs
+│   │   │   ├── DocumentRepository.cs
+│   │   │   └── ChatRepository.cs
+│   │   └── Services/                       # Infrastructure services
+│   │       ├── FileStorageService.cs       # File system operations
+│   │       ├── VectorSearchService.cs      # pgvector operations
+│   │       └── BackgroundTaskQueue.cs      # Background processing
+│   │
+│   └── RagWorkspace.DocumentProcessor/     # Document Processing
+│       ├── Services/                       # Processing services
+│       │   ├── TextExtractionService.cs    # Extract text from files
+│       │   ├── ChunkingService.cs          # Split text into chunks
+│       │   └── EmbeddingService.cs         # Generate vector embeddings
+│       ├── Processors/                     # File type processors
+│       │   ├── PdfProcessor.cs             # PDF text extraction
+│       │   ├── DocxProcessor.cs            # Word document processing
+│       │   └── TextProcessor.cs            # Plain text processing
+│       └── Queue/                          # Background job queue
+│           └── DocumentProcessingJob.cs    # Async document processing
+│
+├── tests/                                  # Test Projects
+│   ├── RagWorkspace.Tests.Unit/           # Unit tests
+│   ├── RagWorkspace.Tests.Integration/    # Integration tests
+│   └── RagWorkspace.Tests.E2E/            # End-to-end tests
+│
+├── docker-compose.yml                     # Docker orchestration
+├── docker-compose.override.yml           # Development overrides
+├── Dockerfile                            # Container definition
+└── README.md                             # This file
+```
+
+## Database Schema
+
+### Core Tables
+
+```sql
+-- Users and Authentication
+users (id, email, password_hash, first_name, last_name, created_at, updated_at)
+
+-- Workspace Management
+workspaces (id, name, description, created_by, created_at, updated_at)
+workspace_members (id, workspace_id, user_id, role, joined_at)
+
+-- Document Storage
+documents (id, workspace_id, filename, original_filename, file_size, 
+          content_type, file_path, upload_status, uploaded_by, uploaded_at, processed_at)
+document_chunks (id, document_id, chunk_index, content, embedding[vector], metadata, created_at)
+
+-- Chat System
+chat_sessions (id, workspace_id, user_id, title, created_at, updated_at)
+chat_messages (id, session_id, message_type, content, metadata, created_at)
+```
+
+### Key Relationships
+
+- **Users** belong to multiple **Workspaces** through **WorkspaceMembers**
+- **Workspaces** contain multiple **Documents** and **ChatSessions**
+- **Documents** are split into **DocumentChunks** for vector search
+- **ChatSessions** contain multiple **ChatMessages**
+
+## Security Model
+
+### Authentication & Authorization
+
+- **JWT Token Authentication**: Secure stateless authentication
+- **Role-based Access Control**: Three workspace roles with distinct permissions
+  - **Owner**: Full workspace control, can delete workspace
+  - **Admin**: Can manage members and upload documents
+  - **Member**: Can view documents and participate in chat
+
+### Permission Matrix
+
+| Action | Owner | Admin | Member |
+|--------|-------|-------|--------|
+| View Documents | ✅ | ✅ | ✅ |
+| Upload Documents | ✅ | ✅ | ❌ |
+| Delete Documents | ✅ | ✅ | ❌ |
+| Chat Access | ✅ | ✅ | ✅ |
+| Add Members | ✅ | ✅ | ❌ |
+| Remove Members | ✅ | ✅ | ❌ |
+| Change Roles | ✅ | ❌ | ❌ |
+| Delete Workspace | ✅ | ❌ | ❌ |
+
+### Data Protection
+
+- **Workspace Isolation**: Users can only access workspaces they're members of
+- **Document Scoping**: Vector search is limited to workspace documents
+- **SignalR Authorization**: Real-time connections require workspace membership
+- **API Rate Limiting**: Prevents abuse and ensures fair usage
+
+## Performance Considerations
+
+### Scalability Features
+
+- **Chunked File Upload**: Large files are uploaded in 1MB chunks to handle slow connections
+- **Background Processing**: Document processing happens asynchronously to avoid blocking uploads
+- **Vector Indexing**: pgvector indices optimize semantic search performance
+- **Connection Pooling**: Database connections are efficiently managed
+- **SignalR Groups**: Users only receive relevant real-time updates
+
+### Optimization Strategies
+
+- **Lazy Loading**: Related entities are loaded on-demand
+- **Caching**: Frequently accessed data is cached in memory
+- **Batch Operations**: Multiple database operations are batched when possible
+- **Compression**: Large responses are compressed
+- **CDN Integration**: Static assets can be served from CDN
+
+## AI/ML Components
+
+### Retrieval Augmented Generation (RAG) Pipeline
+
+1. **Document Ingestion**
+   - Text extraction from various file formats
+   - Intelligent chunking with overlap for context preservation
+   - Vector embedding generation using local Ollama models
+
+2. **Semantic Search**
+   - Query embedding generation
+   - Cosine similarity search in vector space
+   - Relevance scoring and ranking
+
+3. **Response Generation**
+   - Context assembly from relevant chunks
+   - Prompt engineering for accurate responses
+   - Citation tracking for source attribution
+
+### Semantic Kernel Integration
+
+- **Plugin Architecture**: Extensible AI capabilities
+- **Memory Management**: Conversation context preservation
+- **Function Calling**: Structured AI interactions
+- **Token Management**: Efficient LLM usage
+
+## Deployment
+
+### Docker Composition
+
+```yaml
+services:
+  api:
+    build: .
+    ports: ["8080:80"]
+    depends_on: [postgres, ollama]
+    
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: ragworkspace
+      POSTGRES_USER: raguser
+      POSTGRES_PASSWORD: ragpass
+    volumes: ["postgres_data:/var/lib/postgresql/data"]
+    
+  ollama:
+    image: ollama/ollama
+    volumes: ["ollama_data:/root/.ollama"]
+    
+  nginx:
+    image: nginx:alpine
+    ports: ["80:80", "443:443"]
+    volumes: ["./nginx.conf:/etc/nginx/nginx.conf"]
+```
+
+### Environment Configuration
+
+```bash
+# Database
+ConnectionStrings__DefaultConnection="Host=postgres;Database=ragworkspace;Username=raguser;Password=ragpass"
+
+# JWT Authentication
+JWT__SecretKey="your-secret-key"
+JWT__Issuer="RagWorkspace"
+JWT__Audience="RagWorkspace"
+JWT__ExpirationHours=24
+
+# Ollama
+Ollama__BaseUrl="http://ollama:11434"
+Ollama__EmbeddingModel="nomic-embed-text"
+Ollama__ChatModel="llama3.1"
+
+# File Storage
+FileStorage__BasePath="/app/uploads"
+FileStorage__MaxFileSize=104857600  # 100MB
+FileStorage__AllowedExtensions=".pdf,.docx,.txt,.md"
+
+# SignalR
+SignalR__EnableDetailedErrors=false
+SignalR__KeepAliveInterval="00:00:15"
+SignalR__ClientTimeoutInterval="00:00:30"
+```
+
+## Getting Started
+
+### Prerequisites
+
+- .NET 8.0 SDK
+- Docker and Docker Compose
+- Node.js (for Tailwind CSS)
+
+### Development Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-org/rag-workspace.git
+   cd rag-workspace
+   ```
+
+2. **Start infrastructure services**
+   ```bash
+   docker-compose up -d postgres ollama
+   ```
+
+3. **Initialize Ollama models**
+   ```bash
+   docker exec -it ragworkspace_ollama_1 ollama pull nomic-embed-text
+   docker exec -it ragworkspace_ollama_1 ollama pull llama3.1
+   ```
+
+4. **Run database migrations**
+   ```bash
+   cd src/RagWorkspace.API
+   dotnet ef database update
+   ```
+
+5. **Start the application**
+   ```bash
+   dotnet run --project src/RagWorkspace.API
+   ```
+
+6. **Access the application**
+   - Navigate to `https://localhost:7001`
+   - Create a new account or use demo credentials
+
+

@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleverDocs.WebApi", "CleverDocs.WebApi\CleverDocs.WebApi.csproj", "{F7F10286-DE0B-4763-A442-D7F7DBEA7F92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleverDocs.Client", "CleverDocs.Client\CleverDocs.Client.csproj", "{EDE33E1F-2AE8-4AB4-ADE4-2B7ABCA9224E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleverDocs.Core", "CleverDocs.Core\CleverDocs.Core.csproj", "{A5437D13-9A24-4DEC-B04A-073070FFDFF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleverDocs.Infrastructure", "CleverDocs.Infrastructure\CleverDocs.Infrastructure.csproj", "{AC7464D9-820F-4C77-9F4A-0054DBF6F801}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleverDocs.DocumentProcessor", "CleverDocs.DocumentProcessor\CleverDocs.DocumentProcessor.csproj", "{899D7206-598C-4557-9D9A-D2F60E67FE7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleverDocs.Shared", "CleverDocs.Shared\CleverDocs.Shared.csproj", "{C23C991A-EEE9-40B1-983E-F474C3A1EA5B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F7F10286-DE0B-4763-A442-D7F7DBEA7F92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7F10286-DE0B-4763-A442-D7F7DBEA7F92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7F10286-DE0B-4763-A442-D7F7DBEA7F92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7F10286-DE0B-4763-A442-D7F7DBEA7F92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDE33E1F-2AE8-4AB4-ADE4-2B7ABCA9224E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDE33E1F-2AE8-4AB4-ADE4-2B7ABCA9224E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDE33E1F-2AE8-4AB4-ADE4-2B7ABCA9224E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDE33E1F-2AE8-4AB4-ADE4-2B7ABCA9224E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5437D13-9A24-4DEC-B04A-073070FFDFF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5437D13-9A24-4DEC-B04A-073070FFDFF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5437D13-9A24-4DEC-B04A-073070FFDFF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5437D13-9A24-4DEC-B04A-073070FFDFF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC7464D9-820F-4C77-9F4A-0054DBF6F801}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC7464D9-820F-4C77-9F4A-0054DBF6F801}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC7464D9-820F-4C77-9F4A-0054DBF6F801}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC7464D9-820F-4C77-9F4A-0054DBF6F801}.Release|Any CPU.Build.0 = Release|Any CPU
+		{899D7206-598C-4557-9D9A-D2F60E67FE7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{899D7206-598C-4557-9D9A-D2F60E67FE7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{899D7206-598C-4557-9D9A-D2F60E67FE7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{899D7206-598C-4557-9D9A-D2F60E67FE7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C23C991A-EEE9-40B1-983E-F474C3A1EA5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C23C991A-EEE9-40B1-983E-F474C3A1EA5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C23C991A-EEE9-40B1-983E-F474C3A1EA5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C23C991A-EEE9-40B1-983E-F474C3A1EA5B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
