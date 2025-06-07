@@ -63,24 +63,44 @@ graph TB
 ```
 RagWorkspace/
 ├── src/
-│   ├── RagWorkspace.API/                    # Web API Layer
-│   │   ├── Controllers/                     # REST API controllers
-│   │   │   ├── AuthController.cs           # Authentication endpoints
-│   │   │   ├── WorkspacesController.cs     # Workspace management
-│   │   │   ├── DocumentsController.cs      # Document upload/management
-│   │   │   └── ChatController.cs           # Chat session management
+│   ├── RagWorkspace.API/                   # Web API Layer (Minimal APIs)
+│   │   ├── Modules/                        # Feature-based API modules
+│   │   │   ├── Auth/                       # Authentication module
+│   │   │   │   ├── AuthModule.cs           # Auth endpoints registration
+│   │   │   │   ├── AuthEndpoints.cs        # Login, register, refresh endpoints
+│   │   │   │   ├── AuthServices.cs         # Auth service registration
+│   │   │   │   └── AuthModels.cs           # Auth request/response models
+│   │   │   ├── Workspaces/                 # Workspace management module
+│   │   │   │   ├── WorkspaceModule.cs      # Workspace endpoints registration
+│   │   │   │   ├── WorkspaceEndpoints.cs   # CRUD and member management
+│   │   │   │   ├── WorkspaceServices.cs    # Service registration
+│   │   │   │   └── WorkspaceModels.cs      # Workspace DTOs
+│   │   │   ├── Documents/                  # Document management module
+│   │   │   │   ├── DocumentModule.cs       # Document endpoints registration
+│   │   │   │   ├── DocumentEndpoints.cs    # Upload, processing, retrieval
+│   │   │   │   ├── DocumentServices.cs     # Document service registration
+│   │   │   │   └── DocumentModels.cs       # Document DTOs
+│   │   │   ├── Chat/                       # Chat functionality module
+│   │   │   │   ├── ChatModule.cs           # Chat endpoints registration
+│   │   │   │   ├── ChatEndpoints.cs        # Session and message endpoints
+│   │   │   │   ├── ChatServices.cs         # Chat service registration
+│   │   │   │   └── ChatModels.cs           # Chat DTOs
+│   │   │   └── Common/                     # Shared module components
+│   │   │       ├── IModule.cs              # Module interface
+│   │   │       ├── ModuleExtensions.cs     # Module registration helpers
+│   │   │       └── EndpointFilters.cs      # Common endpoint filters
 │   │   ├── Hubs/                           # SignalR hubs
 │   │   │   ├── ChatHub.cs                  # Real-time chat
 │   │   │   └── DocumentHub.cs              # Document processing updates
-│   │   ├── Services/                       # Business logic services
-│   │   │   ├── AuthService.cs              # Authentication logic
-│   │   │   ├── DocumentService.cs          # Document processing
-│   │   │   ├── ChatService.cs              # AI chat functionality
-│   │   │   └── SignalRNotificationService.cs # Real-time notifications
+│   │   ├── Services/                       # Cross-cutting services
+│   │   │   ├── SignalRNotificationService.cs # Real-time notifications
+│   │   │   └── BackgroundTaskQueue.cs      # Background job queue
 │   │   ├── Middleware/                     # Custom middleware
 │   │   │   ├── ExceptionHandlingMiddleware.cs
 │   │   │   └── AuthenticationMiddleware.cs
-│   │   ├── Models/                         # API models and DTOs
+│   │   ├── Extensions/                     # Extension methods
+│   │   │   ├── ServiceCollectionExtensions.cs # DI registration
+│   │   │   └── WebApplicationExtensions.cs # Pipeline configuration
 │   │   └── Program.cs                      # Application entry point
 │   │
 │   ├── RagWorkspace.Client/                # Blazor Frontend
