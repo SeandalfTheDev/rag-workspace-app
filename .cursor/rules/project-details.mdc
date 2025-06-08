@@ -3,11 +3,11 @@ description:
 globs: 
 alwaysApply: false
 ---
-# RAG Workspace - Collaborative Document Intelligence Platform
+# Clevor Docs - Collaborative Document Intelligence Platform
 
 ## Overview
 
-RAG Workspace is a modern, collaborative document intelligence platform that enables teams to upload, share, and query documents using AI-powered semantic search and chat capabilities. Built on a workspace-based architecture, the application allows multiple users to collaborate on shared document collections with role-based access control.
+Clevor Docs is a modern, collaborative document intelligence platform that enables teams to upload, share, and query documents using AI-powered semantic search and chat capabilities. Built on a workspace-based architecture, the application allows multiple users to collaborate on shared document collections with role-based access control.
 
 ## Key Features
 
@@ -61,9 +61,9 @@ graph TB
 ### Project Structure
 
 ```
-RagWorkspace/
+CleverDocs/
 ├── src/
-│   ├── RagWorkspace.API/                   # Web API Layer (Minimal APIs)
+│   ├── CleverDocs.API/                     # Web API Layer (Minimal APIs)
 │   │   ├── Modules/                        # Feature-based API modules
 │   │   │   ├── Auth/                       # Authentication module
 │   │   │   │   ├── AuthModule.cs           # Auth endpoints registration
@@ -103,17 +103,17 @@ RagWorkspace/
 │   │   │   └── WebApplicationExtensions.cs # Pipeline configuration
 │   │   └── Program.cs                      # Application entry point
 │   │
-│   ├── RagWorkspace.Client/                # Blazor Frontend
+│   ├── CleverDocs.Client/                  # Blazor Frontend
 │   │   ├── Components/                     # Reusable UI components
 │   │   │   ├── Chat/                       # Chat-related components
-│   │   │   │   ├── ChatInterface.razor    # Main chat UI
-│   │   │   │   ├── MessageBubble.razor    # Individual messages
-│   │   │   │   └── TypingIndicator.razor  # Typing status
+│   │   │   │   ├── ChatInterface.razor     # Main chat UI
+│   │   │   │   ├── MessageBubble.razor     # Individual messages
+│   │   │   │   └── TypingIndicator.razor   # Typing status
 │   │   │   ├── Documents/                  # Document-related components
-│   │   │   │   ├── DocumentUpload.razor   # File upload interface
-│   │   │   │   ├── DocumentList.razor     # Document browser
-│   │   │   │   └── UploadProgress.razor   # Upload progress tracking
-│   │   │   ├── Workspaces/                # Workspace components
+│   │   │   │   ├── DocumentUpload.razor    # File upload interface
+│   │   │   │   ├── DocumentList.razor      # Document browser
+│   │   │   │   └── UploadProgress.razor    # Upload progress tracking
+│   │   │   ├── Workspaces/                 # Workspace components
 │   │   │   │   ├── WorkspaceSelector.razor
 │   │   │   │   ├── MemberManagement.razor
 │   │   │   │   └── WorkspaceSettings.razor
@@ -128,12 +128,12 @@ RagWorkspace/
 │   │   ├── Services/                       # Client-side services
 │   │   │   ├── ApiService.cs               # HTTP API client
 │   │   │   ├── SignalRService.cs           # SignalR client
-│   │   │   ├── AuthenticationService.cs   # Client auth logic
+│   │   │   ├── AuthenticationService.cs    # Client auth logic
 │   │   │   └── StateService.cs             # Application state
 │   │   ├── Models/                         # Client-side models
 │   │   └── Program.cs                      # Client entry point
 │   │
-│   ├── RagWorkspace.Core/                  # Domain Layer
+│   ├── CleverDocs.Core/                    # Domain Layer
 │   │   ├── Entities/                       # Domain entities
 │   │   │   ├── User.cs                     # User entity
 │   │   │   ├── Workspace.cs                # Workspace entity
@@ -158,7 +158,7 @@ RagWorkspace/
 │   │       ├── DocumentStatus.cs
 │   │       └── MessageType.cs
 │   │
-│   ├── RagWorkspace.Infrastructure/        # Data Access Layer
+│   ├── CleverDocs.Infrastructure/        # Data Access Layer
 │   │   ├── Data/                           # Database context and configurations
 │   │   │   ├── ApplicationDbContext.cs     # EF Core context
 │   │   │   ├── Configurations/             # Entity configurations
@@ -173,7 +173,7 @@ RagWorkspace/
 │   │       ├── VectorSearchService.cs      # pgvector operations
 │   │       └── BackgroundTaskQueue.cs      # Background processing
 │   │
-│   └── RagWorkspace.DocumentProcessor/     # Document Processing
+│   └── CleverDocs.DocumentProcessor/     # Document Processing
 │       ├── Services/                       # Processing services
 │       │   ├── TextExtractionService.cs    # Extract text from files
 │       │   ├── ChunkingService.cs          # Split text into chunks
@@ -186,9 +186,9 @@ RagWorkspace/
 │           └── DocumentProcessingJob.cs    # Async document processing
 │
 ├── tests/                                  # Test Projects
-│   ├── RagWorkspace.Tests.Unit/           # Unit tests
-│   ├── RagWorkspace.Tests.Integration/    # Integration tests
-│   └── RagWorkspace.Tests.E2E/            # End-to-end tests
+│   ├── CleverDocs.Tests.Unit/           # Unit tests
+│   ├── CleverDocs.Tests.Integration/    # Integration tests
+│   └── CleverDocs.Tests.E2E/            # End-to-end tests
 │
 ├── docker-compose.yml                     # Docker orchestration
 ├── docker-compose.override.yml           # Development overrides
@@ -313,7 +313,7 @@ services:
   postgres:
     image: pgvector/pgvector:pg16
     environment:
-      POSTGRES_DB: ragworkspace
+      POSTGRES_DB: CleverDocs
       POSTGRES_USER: raguser
       POSTGRES_PASSWORD: ragpass
     volumes: ["postgres_data:/var/lib/postgresql/data"]
@@ -332,12 +332,12 @@ services:
 
 ```bash
 # Database
-ConnectionStrings__DefaultConnection="Host=postgres;Database=ragworkspace;Username=raguser;Password=ragpass"
+ConnectionStrings__DefaultConnection="Host=postgres;Database=CleverDocs;Username=raguser;Password=ragpass"
 
 # JWT Authentication
 JWT__SecretKey="your-secret-key"
-JWT__Issuer="RagWorkspace"
-JWT__Audience="RagWorkspace"
+JWT__Issuer="CleverDocs"
+JWT__Audience="CleverDocs"
 JWT__ExpirationHours=24
 
 # Ollama
@@ -379,19 +379,19 @@ SignalR__ClientTimeoutInterval="00:00:30"
 
 3. **Initialize Ollama models**
    ```bash
-   docker exec -it ragworkspace_ollama_1 ollama pull nomic-embed-text
-   docker exec -it ragworkspace_ollama_1 ollama pull llama3.1
+   docker exec -it CleverDocs_ollama_1 ollama pull nomic-embed-text
+   docker exec -it CleverDocs_ollama_1 ollama pull llama3.1
    ```
 
 4. **Run database migrations**
    ```bash
-   cd src/RagWorkspace.API
+   cd src/CleverDocs.API
    dotnet ef database update
    ```
 
 5. **Start the application**
    ```bash
-   dotnet run --project src/RagWorkspace.API
+   dotnet run --project src/CleverDocs.API
    ```
 
 6. **Access the application**
