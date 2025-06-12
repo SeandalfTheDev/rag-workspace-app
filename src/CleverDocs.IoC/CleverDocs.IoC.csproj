@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\CleverDocs.Shared\CleverDocs.Shared.csproj" />
+    <ProjectReference Include="..\CleverDocs.Core\CleverDocs.Core.csproj" />
+    <ProjectReference Include="..\CleverDocs.Infrastructure\CleverDocs.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

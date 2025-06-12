@@ -10,6 +10,7 @@ public static class LoginEndpoint
     public static void MapLoginEndpoint(this IEndpointRouteBuilder app)
     {
         app.MapPost("/api/auth/login", LoginHandler)
+            .AllowAnonymous()
             .WithTags("Authentication")
             .WithSummary("Login a user")
             .WithDescription("Login a user")

@@ -11,6 +11,7 @@ public static class RegisterEndpoint
     public static void MapRegisterEndpoint(this IEndpointRouteBuilder app)
     {
         app.MapPost("/api/auth/register", RegisterHandler)
+            .AllowAnonymous()
             .WithTags("Authentication")
             .WithSummary("Register a new user")
             .WithDescription("Register a new user")
@@ -20,7 +21,7 @@ public static class RegisterEndpoint
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
     }
 
-    private static async Task RegisterHandler(
+    private static async Task<IResult> RegisterHandler(
         HttpContext context,
         RegisterRequest request,
         IAuthService authService,
@@ -31,15 +32,15 @@ public static class RegisterEndpoint
         var validationResult = await validator.ValidateAsync(request);
         if (!validationResult.IsValid)
         {
-            Results.BadRequest(validationResult.Errors);
+            return Results.BadRequest(validationResult.Errors);
         }
 
         var result = await authService.RegisterAsync(request);
         if (!result.IsSuccess)
         {
-            Results.BadRequest(result.Error);
+            return Results.BadRequest(result.Error);
         }
 
-        Results.Ok(result.Data);
+        return Results.Ok(result.Data);
     }
 }

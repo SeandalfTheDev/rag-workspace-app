@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using CleverDocs.Core.Entities;
 using CleverDocs.Infrastructure.Data.Converters;
+using CleverDocs.Infrastructure.Data.ValueComparers;
 using Pgvector.EntityFrameworkCore;
 
 namespace CleverDocs.Infrastructure.Data.Configurations;
@@ -28,17 +29,25 @@ public class DocumentChunkConfiguration : IEntityTypeConfiguration<DocumentChunk
             .HasColumnType("text")
             .IsRequired();
             
-        builder.Property(dc => dc.Embedding)
+        // Configure Embedding property with value converter and comparer
+        var embeddingProperty = builder.Property(dc => dc.Embedding)
             .HasColumnName("embedding")
             .HasColumnType("vector(768)")
             .HasConversion<VectorConverter>()
             .IsRequired();
             
-        builder.Property(dc => dc.Metadata)
+        // Set the value comparer for the array property
+        embeddingProperty.Metadata.SetValueComparer(new FloatArrayValueComparer());
+            
+        // Configure Metadata property with value converter and comparer
+        var metadataProperty = builder.Property(dc => dc.Metadata)
             .HasColumnName("metadata")
             .HasColumnType("jsonb")
             .HasConversion<DictionaryJsonConverter>()
             .IsRequired();
+            
+        // Set the value comparer for the dictionary property
+        metadataProperty.Metadata.SetValueComparer(new DictionaryValueComparer());
             
         builder.Property(dc => dc.CreatedAt)
             .HasColumnName("created_at")
