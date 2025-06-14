@@ -20,7 +20,7 @@ public static class LoginEndpoint
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
     }
 
-    private static async Task LoginHandler(
+    private static async Task<IResult> LoginHandler(
         HttpContext context,
         LoginRequest request,
         IAuthService authService,
@@ -31,15 +31,15 @@ public static class LoginEndpoint
         var validationResult = await validator.ValidateAsync(request);
         if (!validationResult.IsValid)
         {
-            Results.BadRequest(validationResult.Errors);
+            return Results.ValidationProblem(validationResult.ToDictionary());
         }
 
         var result = await authService.LoginAsync(request);
         if (!result.IsSuccess)
         {
-            Results.BadRequest(result.Error);
+            return Results.BadRequest(result.Error);
         }
 
-        Results.Ok(result.Data);
+        return Results.Ok(result.Data);
     }
 }

@@ -72,8 +72,8 @@ public class WebApiTestFactory :WebApplicationFactory<Program>, IAsyncLifetime
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-            options.UseNpgsql(_dbContainer.GetConnectionString(), opt => opt.UseVector());
-            options.UseSnakeCaseNamingConvention();
+                options.UseNpgsql(_dbContainer.GetConnectionString(), opt => opt.UseVector());
+                options.UseSnakeCaseNamingConvention();
             });
 
             // Configure logging
