@@ -1,0 +1,15 @@
+{
+  "name": "cleverdocs-client",
+  "version": "1.0.0",
+  "description": "Frontend dependencies for CleverDocs application",
+  "scripts": {
+    "build-css": "tailwindcss -i ./src/CleverDocs.Client/wwwroot/css/app.css -o ./src/CleverDocs.Client/wwwroot/css/output.css --watch",
+    "build-css-prod": "tailwindcss -i ./src/CleverDocs.Client/wwwroot/css/app.css -o ./src/CleverDocs.Client/wwwroot/css/output.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0",
+    "daisyui": "^4.4.0",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10"
+  }
+} 
