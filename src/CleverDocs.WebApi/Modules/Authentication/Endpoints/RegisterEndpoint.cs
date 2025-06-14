@@ -32,7 +32,7 @@ public static class RegisterEndpoint
         var validationResult = await validator.ValidateAsync(request);
         if (!validationResult.IsValid)
         {
-            return Results.BadRequest(validationResult.Errors);
+            return Results.ValidationProblem(validationResult.ToDictionary());
         }
 
         var result = await authService.RegisterAsync(request);

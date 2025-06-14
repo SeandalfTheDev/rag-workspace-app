@@ -1,14 +1,10 @@
 using System.Net;
 using System.Net.Http.Json;
-using CleverDocs.Infrastructure.Data;
 using CleverDocs.Integration.Tests.Helpers;
 using CleverDocs.Shared.Authentication.Models;
-using DotNet.Testcontainers.Builders;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Testcontainers.PostgreSql;
+using Microsoft.AspNetCore.Mvc;
+using Shouldly;
+
 
 namespace CleverDocs.Integration.Tests.Authentication;
 
@@ -32,12 +28,10 @@ public class RegisterEndpointTests : IClassFixture<WebApiTestFactory>
       LastName = "Doe",
     });
 
-    using var assertionScope = new AssertionScope();
-
     var responseBody = await response.Content.ReadFromJsonAsync<AuthResponse>();
 
-    response.StatusCode.Should().Be(HttpStatusCode.OK);
-    responseBody.Should().NotBeNull();
+    response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
   }
 
   [Fact]
@@ -51,15 +45,97 @@ public class RegisterEndpointTests : IClassFixture<WebApiTestFactory>
       LastName = "Doe",
     });
 
-    using var assertionScope = new AssertionScope();
-    
     var responseBody = await response.Content.ReadFromJsonAsync<AuthResponse>();
 
-    response.StatusCode.Should().Be(HttpStatusCode.OK);
-    responseBody.Should().NotBeNull();
-    responseBody.Token.Should().NotBeNull();
-    responseBody.RefreshToken.Should().NotBeNull();
-    responseBody.User.Should().NotBeNull();
-    responseBody.User.Email.Should().Be("test2@test.com");
+    response.StatusCode.ShouldBe(HttpStatusCode.OK);
+    responseBody.ShouldNotBeNull();
+    responseBody.Token.ShouldNotBeNull();
+    responseBody.RefreshToken.ShouldNotBeNull();
+    responseBody.User.ShouldNotBeNull();
+    responseBody.User.Email.ShouldBe("test2@test.com");
+  }
+
+  [Fact]
+  public async Task RegisterHandler_Returns_400_With_ValidationProblemDetails_When_Email_Is_Invalid()
+  {
+    var response = await _client.PostAsJsonAsync("/api/auth/register", new RegisterRequest
+    {
+      Email = "invalid-email", // Invalid email format
+      Password = "Password123!",
+      FirstName = "John",
+      LastName = "Doe",
+    });
+
+    var responseBody = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+    var hasEmailError = responseBody?.Errors.ContainsKey("Email");
+
+    response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+    responseBody.ShouldNotBeNull();
+    responseBody.Errors.ShouldNotBeNull();
+    responseBody.Errors.Count.ShouldBe(1);
+    hasEmailError.ShouldBe(true);
+  }
+
+  [Fact]
+  public async Task RegisterHandler_Returns_400_With_ValidationProblemDetails_When_Password_Is_Weak()
+  {
+    var response = await _client.PostAsJsonAsync("/api/auth/register", new RegisterRequest
+    {
+      Email = "invalid-email", // Invalid email format
+      Password = "apple", // Weak password
+      FirstName = "John",
+      LastName = "Doe",
+    });
+
+    var responseBody = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+    var hasPasswordError = responseBody?.Errors.ContainsKey("Password");
+
+    response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+    responseBody.ShouldNotBeNull();
+    responseBody.Errors.ShouldNotBeNull();
+    responseBody.Errors.Count.ShouldBe(2);
+    hasPasswordError.ShouldBe(true);
+  }
+  
+  [Fact]
+  public async Task RegisterHandler_Returns_400_With_ValidationProblemDetails_When_FirstName_Is_Empty()
+  {
+    var response = await _client.PostAsJsonAsync("/api/auth/register", new RegisterRequest
+    {
+      Email = "invalid-email", // Invalid email format
+      Password = "password", // Weak password
+      FirstName = "",
+      LastName = "Doe",
+    });
+
+    var responseBody = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+    var hasFirstNameError = responseBody?.Errors.ContainsKey("FirstName");
+
+    response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+    responseBody.ShouldNotBeNull();
+    responseBody.Errors.ShouldNotBeNull();
+    responseBody.Errors.Count.ShouldBe(2);
+    hasFirstNameError.ShouldBe(true);
+  }
+  
+  [Fact]
+  public async Task RegisterHandler_Returns_400_With_ValidationProblemDetails_When_LastName_Is_Empty()
+  {
+    var response = await _client.PostAsJsonAsync("/api/auth/register", new RegisterRequest
+    {
+      Email = "invalid-email", // Invalid email format
+      Password = "password", // Weak password
+      FirstName = "John",
+      LastName = "",
+    });
+
+    var responseBody = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+    var hasLastNameError = responseBody?.Errors.ContainsKey("LastName");
+
+    response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+    responseBody.ShouldNotBeNull();
+    responseBody.Errors.ShouldNotBeNull();
+    responseBody.Errors.Count.ShouldBe(2);
+    hasLastNameError.ShouldBe(true);
   }
 }

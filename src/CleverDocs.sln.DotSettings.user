@@ -1,7 +1,6 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3c84992e_002Dcd8d_002D4c30_002D9405_002Df61870f21f87/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Register_Returns_200_OK" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=303b05f3_002D6dae_002D40ba_002Daad5_002D804c3965a60e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="RegisterEndpointTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::457B2C35-3BA2-4657-9A47-8D8BACDCDCB1::net9.0::CleverDocs.Integration.Tests.Authentication.RegisterEndpointTests.Register_Returns_200_OK&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::457B2C35-3BA2-4657-9A47-8D8BACDCDCB1::net9.0::CleverDocs.Integration.Tests.Authentication.RegisterEndpointTests.RegisterHandler_Returns_200_With_Valid_AuthResponse&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::457B2C35-3BA2-4657-9A47-8D8BACDCDCB1::net9.0::CleverDocs.Integration.Tests.Authentication.RegisterEndpointTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
