@@ -1,0 +1,49 @@
+@using CleverDocs.Client.Services
+@using CleverDocs.Client.Models
+@inject IAuthenticationService AuthService
+@implements IDisposable
+
+<div class="authentication-status">
+    @if (currentState.IsAuthenticated && currentState.User != null)
+    {
+        <div class="user-info d-flex align-items-center">
+            <span class="me-3">Welcome, @currentState.User.FirstName @currentState.User.LastName!</span>
+            <button class="btn btn-outline-secondary btn-sm" @onclick="HandleLogout">
+                Logout
+            </button>
+        </div>
+    }
+    else
+    {
+        <div class="auth-links">
+            <a href="/login" class="btn btn-primary btn-sm me-2">Login</a>
+            <a href="/register" class="btn btn-outline-primary btn-sm">Register</a>
+        </div>
+    }
+</div>
+
+@code {
+    private AuthenticationState currentState = AuthenticationState.Unauthenticated;
+
+    protected override void OnInitialized()
+    {
+        currentState = AuthService.CurrentState;
+        AuthService.AuthenticationStateChanged += OnAuthenticationStateChanged;
+    }
+
+    private void OnAuthenticationStateChanged(AuthenticationState newState)
+    {
+        currentState = newState;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task HandleLogout()
+    {
+        await AuthService.LogoutAsync();
+    }
+
+    public void Dispose()
+    {
+        AuthService.AuthenticationStateChanged -= OnAuthenticationStateChanged;
+    }
+} 
