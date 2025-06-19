@@ -54,7 +54,7 @@ public class DocumentConfiguration : IEntityTypeConfiguration<Document>
             .HasMaxLength(10)
             .IsRequired();
             
-        builder.Property(d => d.UploadStatus)
+        builder.Property(d => d.DocumentStatus)
             .HasColumnName("upload_status")
             .HasConversion<int>()
             .IsRequired();
@@ -66,6 +66,9 @@ public class DocumentConfiguration : IEntityTypeConfiguration<Document>
         builder.Property(d => d.UploadedAt)
             .HasColumnName("uploaded_at")
             .IsRequired();
+        
+        builder.Property(d => d.ProcessedAt)
+            .HasColumnName("processed_at") ;
             
         builder.Property(d => d.CreatedAt)
             .HasColumnName("created_at")
@@ -82,7 +85,7 @@ public class DocumentConfiguration : IEntityTypeConfiguration<Document>
         builder.HasIndex(d => d.UploadedBy)
             .HasDatabaseName("ix_documents_uploaded_by");
             
-        builder.HasIndex(d => d.UploadStatus)
+        builder.HasIndex(d => d.DocumentStatus)
             .HasDatabaseName("ix_documents_upload_status");
             
         builder.HasIndex(d => d.CreatedAt)

@@ -3,7 +3,7 @@ namespace CleverDocs.Shared.Enums;
 /// <summary>
 /// The status of the document upload.
 /// </summary>
-public enum UploadStatus
+public enum DocumentStatus
 {
   /// <summary>
   /// The document is pending upload.
