@@ -1,11 +1,14 @@
 using System.Text;
 using CleverDocs.Core.Abstractions.Authentication;
+using CleverDocs.Core.Abstractions.Documents;
 using CleverDocs.Core.Abstractions.Repositories;
 using CleverDocs.Core.Configuration;
 using CleverDocs.Core.Validation.Authentication;
 using CleverDocs.Infrastructure.Authentication;
 using CleverDocs.Infrastructure.Data;
 using CleverDocs.Infrastructure.Data.Repositories;
+using CleverDocs.Infrastructure.Documents;
+using CleverDocs.Infrastructure.TextProcessing;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -88,6 +91,27 @@ public static class ServiceExtensions
   public static IServiceCollection AddRepositories(this IServiceCollection services)
   {
     services.AddScoped<IUserRepository, UserRepository>();
+    services.AddScoped<IDocumentRepository, DocumentRepository>();
+    services.AddScoped<IDocumentChunkRepository, DocumentChunkRepository>();
+    
+    return services;
+  }
+
+  public static IServiceCollection AddDocumentServices(this IServiceCollection services)
+  {
+    services.AddScoped<ITextExtractionService, TextExtractionService>();
+    services.AddScoped<IChunkingService, ChunkingService>();
+    services.AddScoped<IEmbeddingService, EmbeddingService>();
+    services.AddScoped<IDocumentProcessingService, DocumentProcessingService>();
+    
+    return services;
+  }
+
+  public static IServiceCollection AddQueueServices(this IServiceCollection services, IConfiguration configuration)
+  {
+    services.AddHostedService<QueuedHostedService>();
+    services.AddScoped<IBackgroundTaskQueue, BackgroundTaskQueue>();
+    
     return services;
   }
 }
