@@ -1,4 +1,5 @@
-using CleverDocs.Client.Models;
+using CleverDocs.Client.Shared.Authentication.Models;
+using CleverDocs.Client.Shared.Authentication.Dtos;
 
 namespace CleverDocs.Client.Services;
 

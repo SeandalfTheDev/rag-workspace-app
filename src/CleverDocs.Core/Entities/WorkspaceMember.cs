@@ -9,4 +9,7 @@ public class WorkspaceMember
   public WorkspaceRole Role { get; set;} = WorkspaceRole.Member;
   public DateTime JoinedAt { get; set;} = DateTime.UtcNow;
   public DateTime UpdatedAt { get; set;} = DateTime.UtcNow;
+
+  public virtual Workspace Workspace { get; set; } = null!;
+  public virtual User User { get; set; } = null!;
 }

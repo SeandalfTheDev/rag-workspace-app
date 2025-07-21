@@ -83,20 +83,6 @@
                         <ValidationMessage For="@(() => registerModel.ConfirmPassword)" class="text-error text-sm mt-1" />
                     </div>
 
-                    <!-- Terms and Privacy -->
-                    <div class="form-control">
-                        <label class="label cursor-pointer justify-start">
-                            <InputCheckbox @bind-Value="registerModel.AcceptTerms" class="checkbox checkbox-sm" />
-                            <span class="label-text ml-2">
-                                I agree to the 
-                                <a href="/terms" class="link link-primary">Terms of Service</a> 
-                                and 
-                                <a href="/privacy" class="link link-primary">Privacy Policy</a>
-                            </span>
-                        </label>
-                        <ValidationMessage For="@(() => registerModel.AcceptTerms)" class="text-error text-sm mt-1" />
-                    </div>
-
                     <!-- Error Message -->
                     @if (!string.IsNullOrEmpty(errorMessage))
                     {
@@ -166,6 +152,7 @@
 </div>
 
 @using CleverDocs.Client.Services
+@using CleverDocs.Client.Shared.Authentication.Models
 @inject IAuthenticationService AuthService
 @inject NavigationManager Navigation
 

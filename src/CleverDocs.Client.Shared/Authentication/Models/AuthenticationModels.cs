@@ -1,12 +1,6 @@
-namespace CleverDocs.Client.Models;
+using CleverDocs.Client.Shared.Authentication.Dtos;
 
-public record UserDto
-{
-    public Guid Id { get; init; }
-    public string FirstName { get; init; } = string.Empty;
-    public string LastName { get; init; } = string.Empty;
-    public string Email { get; init; } = string.Empty;
-}
+namespace CleverDocs.Client.Shared.Authentication.Models;
 
 public record LoginRequest
 {

@@ -12,6 +12,8 @@
     <PackageReference Include="System.Net.Http.Json" Version="9.0.5" />
   </ItemGroup>
 
-
+  <ItemGroup>
+    <ProjectReference Include="..\CleverDocs.Client.Shared\CleverDocs.Client.Shared.csproj" />
+  </ItemGroup>
 
 </Project>

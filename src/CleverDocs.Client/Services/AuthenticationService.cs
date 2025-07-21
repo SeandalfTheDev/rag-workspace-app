@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
 using System.Net.Http.Json;
 using System.Text.Json;
-using CleverDocs.Client.Models;
+using CleverDocs.Client.Shared.Authentication.Models;
+using CleverDocs.Client.Shared.Authentication.Dtos;
 
 namespace CleverDocs.Client.Services;
 
