@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4008321F-205B-4DA1-9352-AAC5936C82A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{B0D7A0DE-7596-4AD1-8F67-156515156547}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleverDocs.Infrastructure", "CleverDocs.Infrastructure\CleverDocs.Infrastructure.csproj", "{C29BAC6D-95D9-4B5B-A368-E719C6272A8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleverDocs.Api", "CleverDocs.Api\CleverDocs.Api.csproj", "{AF61A13B-5CE3-4C9B-8614-B9BD228E3AE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleverDocs.Domain", "CleverDocs.Domain\CleverDocs.Domain.csproj", "{CF48A6F8-914F-4E5A-B433-F247FD8B3431}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleverDocs.Workers", "CleverDocs.Workers\CleverDocs.Workers.csproj", "{80D0B846-1A38-45D8-B904-A501FBBB7FC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleverDocs.Application", "CleverDocs.Application\CleverDocs.Application.csproj", "{2DC4B20F-B380-48DA-8730-19D30EAF829B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C29BAC6D-95D9-4B5B-A368-E719C6272A8B} = {B0D7A0DE-7596-4AD1-8F67-156515156547}
+		{AF61A13B-5CE3-4C9B-8614-B9BD228E3AE7} = {B0D7A0DE-7596-4AD1-8F67-156515156547}
+		{CF48A6F8-914F-4E5A-B433-F247FD8B3431} = {B0D7A0DE-7596-4AD1-8F67-156515156547}
+		{80D0B846-1A38-45D8-B904-A501FBBB7FC4} = {B0D7A0DE-7596-4AD1-8F67-156515156547}
+		{2DC4B20F-B380-48DA-8730-19D30EAF829B} = {B0D7A0DE-7596-4AD1-8F67-156515156547}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C29BAC6D-95D9-4B5B-A368-E719C6272A8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C29BAC6D-95D9-4B5B-A368-E719C6272A8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C29BAC6D-95D9-4B5B-A368-E719C6272A8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C29BAC6D-95D9-4B5B-A368-E719C6272A8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF61A13B-5CE3-4C9B-8614-B9BD228E3AE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF61A13B-5CE3-4C9B-8614-B9BD228E3AE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF61A13B-5CE3-4C9B-8614-B9BD228E3AE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF61A13B-5CE3-4C9B-8614-B9BD228E3AE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF48A6F8-914F-4E5A-B433-F247FD8B3431}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF48A6F8-914F-4E5A-B433-F247FD8B3431}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF48A6F8-914F-4E5A-B433-F247FD8B3431}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF48A6F8-914F-4E5A-B433-F247FD8B3431}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80D0B846-1A38-45D8-B904-A501FBBB7FC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80D0B846-1A38-45D8-B904-A501FBBB7FC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80D0B846-1A38-45D8-B904-A501FBBB7FC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80D0B846-1A38-45D8-B904-A501FBBB7FC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DC4B20F-B380-48DA-8730-19D30EAF829B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DC4B20F-B380-48DA-8730-19D30EAF829B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DC4B20F-B380-48DA-8730-19D30EAF829B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DC4B20F-B380-48DA-8730-19D30EAF829B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
