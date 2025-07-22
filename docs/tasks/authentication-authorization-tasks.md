@@ -3,11 +3,19 @@
 ## Backend Implementation
 
 ### 1. Database Setup
-- [ ] Create `User` entity with required properties
-- [ ] Create `UserSession` entity for session management
-- [ ] Create `Role` and `Permission` entities
-- [ ] Set up EF Core configurations and relationships
-- [ ] Create and apply database migrations
+- [X] Create `User` entity with required properties
+- [X] Create `UserSession` entity for session management
+- [X] Create RBAC entities:
+  - [X] `Role` - For grouping permissions
+  - [X] `Permission` - Granular access rights
+  - [X] `RolePermission` - Role-permission mappings
+  - [X] `UserRole` - User-role assignments with scoping
+- [X] Set up EF Core configurations and relationships
+- [X] Create and apply database migrations
+- [ ] Seed initial data:
+  - [ ] System roles (SuperAdmin, WorkspaceOwner, etc.)
+  - [ ] Core permissions (Document.*, Workspace.*, etc.)
+  - [ ] Default role-permission assignments
 
 ### 2. Authentication Endpoints
 - [ ] `POST /api/auth/register` - User registration
@@ -20,19 +28,39 @@
 - [ ] `GET /api/auth/me` - Get current user profile
 
 ### 3. Authorization System
-- [ ] Implement role-based access control (RBAC)
-- [ ] Create permission attributes
-- [ ] Implement policy-based authorization
-- [ ] Add resource-level permissions
-- [ ] Implement permission caching
+- [ ] Implement RBAC infrastructure:
+  - [ ] `PermissionService` for permission evaluation
+  - [ ] `AuthorizePermission` attribute for controllers
+  - [ ] Permission requirement handlers
+  - [ ] Policy registration and configuration
+- [ ] Implement permission scoping:
+  - [ ] Workspace-level permissions
+  - [ ] Document-level permissions
+  - [ ] Folder-level permissions
+- [ ] Add permission caching:
+  - [ ] Cache user permissions
+  - [ ] Invalidate cache on role/permission changes
+- [ ] Create admin endpoints for role management:
+  - [ ] CRUD operations for roles
+  - [ ] Role assignment to users
+  - [ ] Permission management for roles
 
 ### 4. Security Features
-- [ ] Password hashing with Argon2
-- [ ] JWT token generation and validation
-- [ ] Session management
-- [ ] Rate limiting for auth endpoints
-- [ ] Account lockout after failed attempts
-- [ ] Password complexity requirements
+- [ ] Authentication:
+  - [ ] Password hashing with Argon2
+  - [ ] JWT token generation and validation
+  - [ ] Refresh token rotation
+  - [ ] Session management and tracking
+- [ ] Protection:
+  - [ ] Rate limiting for auth endpoints
+  - [ ] Account lockout after failed attempts
+  - [ ] Password complexity requirements
+  - [ ] Session timeout and idle timeout
+- [ ] Audit Logging:
+  - [ ] Login/logout events
+  - [ ] Permission changes
+  - [ ] Role assignments
+  - [ ] Security-sensitive operations
 
 ## Frontend Implementation
 

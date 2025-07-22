@@ -9,7 +9,6 @@
     <ItemGroup>
       <Folder Include="DocumentProcessing\" />
       <Folder Include="Documents\" />
-      <Folder Include="Users\" />
       <Folder Include="Workspaces\" />
     </ItemGroup>
 

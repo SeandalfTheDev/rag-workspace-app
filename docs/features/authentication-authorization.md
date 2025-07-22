@@ -1,13 +1,14 @@
 # User Authentication & Authorization
 
 ## Overview
-The Authentication & Authorization system provides secure access control for the Clevor Docs platform. It handles user identity verification, session management, and fine-grained permission controls across workspaces and resources.
+The Authentication & Authorization system provides secure access control for the Clevor Docs platform. It handles user identity verification, session management, and fine-grained permission controls across workspaces and resources using a flexible Role-Based Access Control (RBAC) system.
 
 ## Key Features
 - Email/password authentication
 - JWT-based session management
-- Role-based access control (RBAC)
-- Workspace-level permissions
+- Flexible Role-Based Access Control (RBAC)
+- Resource-level permission scoping
+- Custom role creation and management
 - Session management and security
 - Password reset flow
 - Email verification
@@ -19,24 +20,55 @@ The Authentication & Authorization system provides secure access control for the
 #### User
 - **Purpose**: Represents a system user
 - **Key Properties**:
-  - `Id`: Unique identifier
+  - `Id`: Unique identifier (UUID)
   - `Email`: Unique login identifier
-  - `PasswordHash`: Securely hashed password
-  - `PasswordSalt`: Additional security for hashing
+  - `PasswordHash`: Securely hashed password using Argon2
+  - `FirstName`: User's first name
+  - `LastName`: User's last name
+  - `IsActive`: Account status
   - `IsEmailVerified`: Email confirmation status
   - `LastLoginAt`: Last successful login timestamp
   - `FailedLoginAttempts`: Security tracking
+  - `UserRoles`: Collection of assigned roles
 
 #### UserSession
 - **Purpose**: Tracks active user sessions
 - **Key Properties**:
-  - `Id`: Session identifier
+  - `Id`: Session identifier (UUID)
   - `UserId`: Associated user
-  - `RefreshToken`: Token for session renewal
+  - `RefreshToken`: Token for session renewal (JWT)
   - `ExpiresAt`: Session expiration
   - `Revoked`: Whether session was terminated
   - `UserAgent`: Client information
   - `IpAddress`: Client IP address
+  - `CreatedAt`: Session creation timestamp
+
+#### Role
+- **Purpose**: Defines a set of permissions
+- **Key Properties**:
+  - `Id`: Unique identifier (UUID)
+  - `Name`: Role name (e.g., "WorkspaceAdmin")
+  - `Description`: Role description
+  - `IsSystemRole`: If true, role cannot be modified
+  - `RolePermissions`: Collection of assigned permissions
+  - `UserRoles`: Collection of user assignments
+
+#### Permission
+- **Purpose**: Defines a specific action that can be performed
+- **Key Properties**:
+  - `Id`: Unique identifier (UUID)
+  - `Name`: Permission name (e.g., "Document.Read")
+  - `Description`: Permission description
+  - `Category`: Grouping category (e.g., "Document", "Workspace")
+
+#### UserRole
+- **Purpose**: Maps users to roles with optional scoping
+- **Key Properties**:
+  - `UserId`: Reference to User
+  - `RoleId`: Reference to Role
+  - `ScopeId`: Optional scope (e.g., WorkspaceId)
+  - `ScopeType`: Type of scope (e.g., "Workspace")
+  - `ExpiresAt`: Optional expiration for temporary roles
 
 ### 2. Services
 
