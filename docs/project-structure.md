@@ -74,14 +74,23 @@ CleverDocs/
 │   │   └── Behaviors/                      # Cross-cutting concerns
 │   │
 │   ├── CleverDocs.Infrastructure/          # Data Access Layer
+│   │   ├── Data/                           # Database contexts and configurations
+│   │   │   ├── Contexts/                   # DbContext implementations
+│   │   │   │   ├── AppDbContext.cs         # Core application context (users, workspaces, etc.)
+│   │   │   │   ├── DocumentDbContext.cs    # Document metadata context
+│   │   │   │   └── VectorDbContext.cs      # Vector storage context (pgvector)
+│   │   │   ├── Configurations/             # Entity configurations
+│   │   │   └── Migrations/                 # Database migrations
 │   │   ├── DocumentProcessing/             # Document processing infrastructure
 │   │   │   ├── Processors/                 # Document processors
 │   │   │   ├── Extractors/                 # Text extractors
 │   │   │   ├── Chunkers/                   # Document chunkers
 │   │   │   ├── Embedders/                  # Text embedding generators
 │   │   │   └── Services/                   # Processing services
-│   │   ├── Data/                           # Database context
-│   │   ├── Repositories/                   # Data access
+│   │   ├── Repositories/                   # Data access repositories
+│   │   │   ├── Document/                   # Document repositories
+│   │   │   ├── Vector/                     # Vector repositories
+│   │   │   └── Core/                       # Core domain repositories
 │   │   └── Services/                       # Infrastructure services
 │   │
 │   └── CleverDocs.Workers/                 # Background Workers

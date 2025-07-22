@@ -7,9 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Folder Include="Data\Contexts\" />
       <Folder Include="Data\Migrations\" />
       <Folder Include="DocumentProcessing\" />
-      <Folder Include="Repositories\" />
+      <Folder Include="Repositories\Core\" />
+      <Folder Include="Repositories\Documents\" />
+      <Folder Include="Repositories\Vectors\" />
       <Folder Include="Services\" />
     </ItemGroup>
 
