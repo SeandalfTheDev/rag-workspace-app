@@ -9,5 +9,5 @@ public class RefreshToken
     public required string Token { get; set; }
     public required DateTime ExpiresAtUtc { get; set; }
 
-    public IdentityUser User { get; set; }
+    public IdentityUser User { get; set; } = null!;
 }
