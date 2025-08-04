@@ -2,10 +2,11 @@
 using CleverDocs.Application.Auth.Interfaces;
 using CleverDocs.Application.Auth.Mapping;
 using CleverDocs.Domain.Auth;
+using CleverDocs.Domain.Errors;
+using CleverDocs.Domain.Shared;
 using CleverDocs.Infrastructure.Data.Contexts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Options;
 
 namespace CleverDocs.Application.Auth.Services;
@@ -17,54 +18,45 @@ public class AuthService(
     TokenProvider tokenProvider,
     IOptions<JwtAuthOptions> jwtAuthOptions) : IAuthService
 {
-    public async Task<AuthResult<AccessTokensDto>> RegisterUserAsync(RegisterUserDto registerUserDto)
+    public async Task<AppResult<AccessTokensDto>> RegisterUserAsync(RegisterUserDto registerUserDto)
     {
-        var authMapper = new AuthMapper();
-        await using IDbContextTransaction transaction = await identityDbContext.Database.BeginTransactionAsync();
-        applicationDbContext.Database.SetDbConnection(identityDbContext.Database.GetDbConnection());
-        await applicationDbContext.Database.UseTransactionAsync(transaction.GetDbTransaction());
-
         try
         {
-            // Create an identity user
+            var authMapper = new AuthMapper();
+            
             var identityUser = new IdentityUser
             {
                 Email = registerUserDto.Email,
                 UserName = registerUserDto.Email
             };
-
-            // Create the user in the identity system
+            
             var createUserResult = await userManager.CreateAsync(identityUser, registerUserDto.Password);
             if (!createUserResult.Succeeded)
             {
-                var errors = createUserResult.Errors.ToDictionary(e => e.Code, e => new[] { e.Description });
-                return AuthResult<AccessTokensDto>.Failure(
-                    "Unable to register user, please try again",
-                    errors,
-                    AuthErrorType.Validation);
+                var authError = new AppError(
+                    "Identity.Failure",
+                    "An error occurred while creating the user");
+                
+                return await Task.FromResult<AppResult<AccessTokensDto>>(authError);
             }
-
-            // Add a user to a role
+            
             var addToRoleResult = await userManager.AddToRoleAsync(identityUser, Roles.AppUser);
             if (!addToRoleResult.Succeeded)
             {
                 var errors = addToRoleResult.Errors.ToDictionary(e => e.Code, e => new[] { e.Description });
-                return AuthResult<AccessTokensDto>.Failure(
-                    "Unable to assign role to user, please try again",
-                    errors,
-                    AuthErrorType.ServerError);
+                var authError = new AppError(
+                    "IdentityRole.Failure",
+                    "An error occurred while adding the user to the 'AppUser' role");
             }
-
-            // Create an application user
+            
             var user = authMapper.MapRegisterDtoToUser(registerUserDto);
             user.IdentityId = identityUser.Id;
             
             applicationDbContext.Users.Add(user);
             await applicationDbContext.SaveChangesAsync();
-
-            // Generate tokens
-            var tokenRequest = new TokenRequest(identityUser.Id, identityUser.Email, [Roles.AppUser]);
-            AccessTokensDto accessTokens = tokenProvider.Create(tokenRequest);
+            
+            var tokenRequest = new TokenRequest(identityUser.Id, identityUser.Email!, [Roles.AppUser]);
+            var accessTokens = tokenProvider.Create(tokenRequest);
             
             var refreshToken = new RefreshToken
             {
@@ -76,37 +68,27 @@ public class AuthService(
             identityDbContext.RefreshTokens.Add(refreshToken);
 
             await identityDbContext.SaveChangesAsync();
-
-            // Commit transaction if everything succeeded
-            await transaction.CommitAsync();
-
-            return AuthResult<AccessTokensDto>.Success(accessTokens);
+            
+            return await Task.FromResult<AppResult<AccessTokensDto>>(accessTokens);
         }
         catch (Exception ex)
         {
-            await transaction.RollbackAsync();
-            return AuthResult<AccessTokensDto>.Failure(
-                "An error occurred while registering the user",
-                null);
+            var authError = new AppError(
+                "Identity.Failure",
+                "An error occurred while registering the user");
+            
+            return await Task.FromResult<AppResult<AccessTokensDto>>(authError);
         }
     }
 
-    public async Task<AuthResult<AccessTokensDto>> LoginUserAsync(LoginUserDto loginUserDto)
+    public async Task<AppResult<AccessTokensDto>> LoginUserAsync(LoginUserDto loginUserDto)
     {
-        var authMapper = new AuthMapper();
-
         try
         {
             var identityUser = await userManager.FindByEmailAsync(loginUserDto.Email);
             if (identityUser == null)
             {
-                return AuthResult<AccessTokensDto>.Failure(
-                    "Invalid email or password",
-                    new Dictionary<string, string[]>
-                    {
-                        ["email"] = new[] { "Invalid email or password" }
-                    },
-                    AuthErrorType.Validation);
+                return await Task.FromResult<AppResult<AccessTokensDto>>(CommonErrors.NotFound);
             }
             
             var roles = await userManager.GetRolesAsync(identityUser);
@@ -125,17 +107,50 @@ public class AuthService(
 
             await identityDbContext.SaveChangesAsync();
             
-            var authResult = AuthResult<AccessTokensDto>.Success(accessTokens);
-            return authResult;
+            return await Task.FromResult<AppResult<AccessTokensDto>>(accessTokens);
         }
         catch (Exception ex)
         {
-            return AuthResult<AccessTokensDto>.Failure(
-                "An error occurred while logging in the user",
-                null);
+            var authError = new AppError(
+                "Identity.Failure",
+                "An error occurred while logging in the user");
+            
+            return await Task.FromResult<AppResult<AccessTokensDto>>(authError);
         }
     }
 
+    public async Task<AppResult<AccessTokensDto>> RefreshTokenAsync(RefreshTokenDto refreshTokenDto)
+    {
+        var refreshToken = await identityDbContext.RefreshTokens
+            .Include(rt => rt.User)
+            .FirstOrDefaultAsync(rt => rt.Token == refreshTokenDto.RefreshToken);
+
+        if (refreshToken == null)
+        {
+            return await Task.FromResult<AppResult<AccessTokensDto>>(CommonErrors.NotFound);
+        }
+
+        if (refreshToken.ExpiresAtUtc < DateTime.UtcNow)
+        {
+            var authError = new AppError(
+                "Identity.Failure",
+                "The refresh token has expired");
+            return await Task.FromResult<AppResult<AccessTokensDto>>(authError);
+        }
+        
+        var roles = await userManager.GetRolesAsync(refreshToken.User);
+        
+        var tokenRequest = new TokenRequest(refreshToken.User.Id, refreshToken.User.Email!, roles);
+        var accessTokens = tokenProvider.Create(tokenRequest);
+
+        refreshToken.Token = accessTokens.RefreshToken;
+        refreshToken.ExpiresAtUtc = DateTime.UtcNow.AddDays(jwtAuthOptions.Value.RefreshTokenExpirationDays);
+
+        await identityDbContext.SaveChangesAsync();
+        
+        return await Task.FromResult<AppResult<AccessTokensDto>>(accessTokens);
+    }
+    
     public async Task<bool> EmailExistsAsync(string email)
     {
         return await identityDbContext.Users.AnyAsync(u => u.Email == email);

@@ -1,4 +1,5 @@
 ﻿using CleverDocs.Application.Auth.DTOs;
+using CleverDocs.Domain.Shared;
 
 namespace CleverDocs.Application.Auth.Interfaces;
 
@@ -9,14 +10,22 @@ public interface IAuthService
     /// </summary>
     /// <param name="registerUserDto">The registration details</param>
     /// <returns>Access tokens for the newly registered user</returns>
-    Task<AuthResult<AccessTokensDto>> RegisterUserAsync(RegisterUserDto registerUserDto);
+    Task<AppResult<AccessTokensDto>> RegisterUserAsync(RegisterUserDto registerUserDto);
     
     /// <summary>
     /// Logs in a user with the provided login details
     /// </summary>
     /// <param name="loginUserDto">The login details</param>
     /// <returns>Access tokens for the logged-in user</returns>
-    Task<AuthResult<AccessTokensDto>> LoginUserAsync(LoginUserDto loginUserDto);
+    Task<AppResult<AccessTokensDto>> LoginUserAsync(LoginUserDto loginUserDto);
+
+
+    /// <summary>
+    /// Refreshes the access tokens using a valid refresh token
+    /// </summary>
+    /// <param name="refreshTokenDto">The refresh token details</param>
+    /// <returns>New access tokens</returns>
+    Task<AppResult<AccessTokensDto>> RefreshTokenAsync(RefreshTokenDto refreshTokenDto);
 
     /// <summary>
     /// Checks if an email address is already registered in the system

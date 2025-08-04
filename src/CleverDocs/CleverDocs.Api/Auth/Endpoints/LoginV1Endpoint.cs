@@ -45,19 +45,14 @@ public static class LoginV1Endpoint
         }
 
         var authResult = await authService.LoginUserAsync(loginUserDto);
-        if (!authResult.Succeeded)
+        if (authResult.IsFailure)
         {
-            if (authResult.ErrorType == AuthErrorType.Validation)
-            {
-                return TypedResults.ValidationProblem(authResult.Errors ?? new Dictionary<string, string[]>());
-            }
-            
             return TypedResults.Problem(
                 statusCode: StatusCodes.Status500InternalServerError,
                 title: "Registration failed.",
-                detail: authResult.ErrorMessage);
+                detail: authResult.Error.Description);
         }
         
-        return TypedResults.Ok(authResult.Data);
+        return TypedResults.Ok(authResult.Value);
     }
 }

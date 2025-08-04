@@ -75,6 +75,14 @@ public static class DependencyInjection
         return builder;
     }
 
+    public static WebApplicationBuilder AddApplicationServices(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddMemoryCache();
+        builder.Services.AddScoped<UserContext>();
+        
+        return builder;
+    }
+
     public static WebApplicationBuilder AddValidators(this WebApplicationBuilder builder)
     {
         builder.Services.AddValidatorsFromAssembly(typeof(LoginUserDtoValidator).Assembly);

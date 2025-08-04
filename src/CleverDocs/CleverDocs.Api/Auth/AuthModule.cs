@@ -12,6 +12,7 @@ public static class AuthModule
         
         group.MapRegistrationV1Endpoint();
         group.MapLoginV1Endpoint();
+        group.MapRefreshTokenV1Endpoint();
 
         return app;
     }

@@ -12,15 +12,15 @@
   - [X] `UserRole` - User-role assignments with scoping
 - [X] Set up EF Core configurations and relationships
 - [X] Create and apply database migrations
-- [ ] Seed initial data:
-  - [ ] System roles (SuperAdmin, WorkspaceOwner, etc.)
-  - [ ] Core permissions (Document.*, Workspace.*, etc.)
-  - [ ] Default role-permission assignments
+- [X] Seed initial data:
+  - [x] System roles (SuperAdmin, WorkspaceOwner, etc.)
+  - [X] Core permissions (Document.*, Workspace.*, etc.)
+  - [X] Default role-permission assignments
 
 ### 2. Authentication Endpoints
-- [ ] `POST /api/auth/register` - User registration
-- [ ] `POST /api/auth/login` - User login
-- [ ] `POST /api/auth/refresh` - Refresh access token
+- [X] `POST /api/auth/register` - User registration
+- [X] `POST /api/auth/login` - User login
+- [X] `POST /api/auth/refresh` - Refresh access token
 - [ ] `POST /api/auth/logout` - Invalidate session
 - [ ] `POST /api/auth/forgot-password` - Password reset request
 - [ ] `POST /api/auth/reset-password` - Complete password reset

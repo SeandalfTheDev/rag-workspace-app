@@ -25,7 +25,9 @@ public class RegisterUserDtoValidator : AbstractValidator<RegisterUserDto>
         RuleFor(x => x.Password)
             .NotEmpty()
             .MinimumLength(6)
-            .MaximumLength(100);
+            .MaximumLength(100)
+            .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).*$")
+            .WithMessage("Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, one digit and one special character.");
 
         RuleFor(x => x.ConfirmPassword)
             .NotEmpty()
